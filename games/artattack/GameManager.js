@@ -1,7 +1,7 @@
 define([
 	'fetch/entryUtils',
 ], (
-	entryUtils
+	entryUtils,
 ) => {
 	'use strict';
 
@@ -46,9 +46,9 @@ define([
 					col,
 					entryID: entry.id,
 					teamID: c.id,
-					console: [],
 					localStorage: {},
 					elapsedTime: 0,
+					disqualified: false,
 					codeSteps: 0,
 				})
 				c.rgb = '#'+this.playerColors[col].map(c=>c.toString(16).padStart(2,0)).join('');
@@ -116,18 +116,8 @@ define([
 				error + ' (gave ' + entry.errorOutput +
 				' for ' + entry.errorInput + ')'
 			);
-			// if(entry.pauseOnError) {
-				// To support pauseOnError, roll back the game state to just
-				// before the current move. For example, to roll back the
-				// random number generator:
-				this.random.rollback();
-				// Throwing 'PAUSE' will cause the manager to pause the game
-				throw 'PAUSE';
-			// } else {
-			// 	// If you want to auto-disqualify entries which break the
-			// 	// rules:
-      //   // entry.disqualified = true;
-			// }
+			this.random.rollback();
+			throw 'PAUSE';
 		}
 
 		step(type) {
@@ -143,6 +133,10 @@ define([
 			//console.log(window.localStorage);
 			var i = 0;
 			for (var [id, entry] of this.entryLookup) {
+				if (entry.disqualified) {
+					results[i++] = {entry, action: "nothing"};
+					continue;
+				}
 				var myself = [entry.col, entry.x, entry.y];
 				var localStorage = entry.localStorage;
 				const params = {
@@ -159,7 +153,7 @@ define([
 				
 				try {
 					const begin = performance.now();
-				  action = entry.fn(params, {consoleTarget: entry.console, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
+				  action = entry.fn(params, {consoleTarget: {push: a => console[a.type](a.value)}, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
 					elapsed = performance.now() - begin;
 				} catch(e) {
 					error = entryUtils.stringifyEntryError(e);
@@ -190,6 +184,25 @@ define([
 					this.board[entry.x][entry.y] = [entry.col, 0, this.board[entry.x][entry.y]][Math.abs(entry.col-this.board[entry.x][entry.y])%3];
 				} else {
 					this.board[entry.x][entry.y] = entry.col;
+				}
+			}
+			
+			for (var [id, entry] of this.entryLookup) { // player+player = 0
+				if (entry.disqualified) continue;
+				for (var [id2, entry2] of this.entryLookup) { // player+player = 0
+					if (!entry2.disqualified && entry != entry2 && entry.x == entry2.x && entry.y == entry2.y) {
+						this.board[entry.x][entry.y] = 0;
+					}
+				}
+			}
+			
+			if (this.round>=5) { // eliminating
+				var found = new Array(this.teams.length+1).fill(0);
+				for (var col of this.board) for (var item of col) found[item]++;
+				for (let [id, entry] of this.entryLookup) {
+					if (found[entry.col] <= 1) {
+						entry.disqualified=true;
+					}
 				}
 			}
 			
@@ -282,7 +295,7 @@ define([
 						const entry = this.entryLookup.get(entryState.id);
 						return {
 							id: entryState.id,
-							disqualified: entryState.disqualified,
+							disqualified: entry.disqualified,
 							title: entryState.title,
 							// example data:
 							elapsedTime: entry.elapsedTime,
