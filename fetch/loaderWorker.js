@@ -25,7 +25,8 @@ define(['./StackExchangeAPI'], (StackExchangeAPI) => {
 		/* jshint -W106 */ // snake_case variables are from external API
 		let title = 'Unknown competitor from ' + item.owner.display_name;
 		try {
-			title = findRegex(item.body, REG_TITLE, 2) || title;
+			title = (findRegex(item.body, REG_TITLE, 2) || title)
+			  .replace(/<[^<>]+>/g, ""); // parsing HTML with regex
 			REG_CODE.lastIndex = 0;
 			const codeBlocks = [];
 			while(true) {

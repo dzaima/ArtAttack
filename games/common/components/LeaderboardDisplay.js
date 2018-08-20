@@ -94,6 +94,7 @@ define([
 				this.tableTeamsLookup.set(team.id, {
 					key: team.id,
 					className: 'team-' + team.id,
+					style: team.rgb? 'background: '+team.rgb : '',
 				});
 				team.entries.forEach((entry) => {
 					this.tableEntriesLookup.set(entry.id, {

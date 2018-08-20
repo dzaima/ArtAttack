@@ -117,7 +117,7 @@ define([
 			const src = (
 				// All prelude is rendered on 1 line so that line numbers in
 				// reported errors are easy to rectify
-				'"use strict";' +
+				//'"use strict";' +
 				'self.tempFn = function(parameters, extras) {' +
 					'const self = undefined;' +
 					'const window = undefined;' +

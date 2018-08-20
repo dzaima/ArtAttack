@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--
+default-src 'none';
+style-src 'self';
+-->
+<meta http-equiv="content-security-policy" content="
+	base-uri 'self';
+	
+	child-src blob:;
+	frame-src blob:;
+	connect-src https://api.stackexchange.com;
+	script-src 'self' 'unsafe-inline' blob:;
+	worker-src blob:;
+	
+	img-src 'self';
+	form-action 'none';
+">
+
+<!-- these properties are read by the engine to configure the game -->
+<title>Art Attack</title>
+<link rel="icon" href="favicons/artattack.png"> <!-- don't forget a favicon! -->
+<meta name="stack-exchange-site" content="codegolf">
+<meta name="stack-exchange-qid" content="170908"> <!-- question ID here -->
+
+<!-- Defines extra columns which appear in the entry selection pane of the code editor -->
+<meta name="team-view-columns" content='[]'>
+
+<!-- team selection configuration - pick a filename from /teams
+     (free_for_all = all entries on their own team) -->
+<meta name="team-type" content="free_for_all">
+<meta name="team-type-args" content='{}'>
+
+<!-- tournament configuration - pick a filename from /matches -->
+<meta name="tournament-type" content="brawl">
+<meta name="tournament-type-args" content='{}'>
+
+<!-- match configuration - pick a filename from /matches -->
+<meta name="match-type" content="brawl">
+<meta name="match-type-args" content='{
+	"count": 50
+}'>
+
+<meta name="game-type" content="artattack"> <!-- put your /games/<folder_name> here -->
+<meta name="game-config" content='{
+	"maxFrame": 2000
+}'> <!-- put any default gameConfig stuff here -->
+<meta name="play-config" content='{
+	"delay": 0,
+	"speed": 1
+}'> <!-- pick a reasonable default playspeed (should be fast but watchable) -->
+<meta name="display-config" content='{}'> <!-- put any default displayConfig stuff here -->
+
+<!-- fill in this template to help people get started with their entries -->
+<meta name="default-code" content="function(myself, grid, bots, gameInfo) {
+    // Code here
+    return move;
+}
+">
+
+<script src="core/requirejs.js"></script>
+<script src="engine/entry.js" async></script>
+</head>
+<body>
+
+<noscript>This viewer requires Javascript!</noscript>
+
+</body>
+</html>

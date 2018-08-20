@@ -109,11 +109,17 @@ define(['./documentUtils', './style.css'], (docutil) => {
 		const classes = (
 			datum.className ? [...commonClasses, datum.className] : commonClasses
 		);
-
 		if(datum.nested) {
-			datum.nested.forEach((child) => createRows(output, child, classes));
+			var style = datum.style || '';
+			datum.nested.forEach((child) => {
+				if (!child.style) child.style = style;
+				createRows(output, child, classes);
+			});
 		} else {
-			output.push(docutil.make('tr', {'class': classes.join(' ')}));
+			output.push(docutil.make('tr', {
+				'class': classes.join(' '),
+				'style': datum.style || 'background:#fff',
+			}));
 		}
 	}
 
