@@ -19,7 +19,11 @@ define([
 			this.canvas = docutil.make('canvas');
 			this.canvas.width = 0;
 			this.canvas.height = 0;
-			this.board = docutil.make('div', {}, [this.canvas]);
+			this.markerDiv = docutil.make('div', {}, []);
+			docutil.updateStyle(this.markerDiv, {
+				'position': 'absolute',
+			});
+			this.board = docutil.make('div', {}, [this.markerDiv, this.canvas]);
 			this.context = this.canvas.getContext('2d');
 			this.dat = null;
 			this.renderedMarks = new Map();
@@ -109,14 +113,13 @@ define([
 		}
 
 		populateMarkers(markers) {
-
-
-			this.rawPlayers.forEach((player) => {
-				const x = player.x;
-				const y = player.y;
-				const entry = this.getEntry(player.entry);
-				let className = 'team team-' + entry.team.id;
-				let tooltip = entry.entry.title+': color ' + entry.color;;
+			
+			this.rawPlayers.forEach((team) => {
+				let entry = team.entries[0];
+				const x = entry.y;
+				const y = entry.x;
+				let className = 'team team-' + team.id;
+				let tooltip = entry.title+': color ' + entry.col;
 				markers.set(x + '-' + y, {
 					x,
 					y,
@@ -126,9 +129,6 @@ define([
 			});
 		}
 		
-		getEntry(entryID) {
-			return this.entries.get(entryID) || UNKNOWN_ENTRY;
-		}
 		
 		rerender() {
 			docutil.updateStyle(this.canvas, {
@@ -140,6 +140,7 @@ define([
 				'height': Math.round(this.size * this.scale) + 'px',
 				'margin': '0 auto',
 				'display': 'inline-block',
+				// 'position': 'absolute',
 			});
 
 			const markers = new Map();
@@ -167,7 +168,7 @@ define([
 					'height': this.scale + 'px',
 					'fontSize': this.scale + 'px',
 				});
-				docutil.setParent(dom.element, this.board);
+				docutil.setParent(dom.element, this.markerDiv);
 			});
 
 			this.renderedMarks.forEach((dom, key) => {

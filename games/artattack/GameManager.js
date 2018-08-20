@@ -297,7 +297,7 @@ define([
 							id: entryState.id,
 							disqualified: entry.disqualified,
 							title: entryState.title,
-							// example data:
+							
 							elapsedTime: entry.elapsedTime,
 							codeSteps: entry.codeSteps,
 							error: entryState.error,
@@ -305,6 +305,8 @@ define([
 							errorOutput: entryState.errorOutput,
 							console: entryState.console,
 							col: entry.col,
+							x: entry.x,
+							y: entry.y,
 						};
 					}),
 				})),
