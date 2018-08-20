@@ -118,7 +118,7 @@ define(['./documentUtils', './style.css'], (docutil) => {
 		} else {
 			output.push(docutil.make('tr', {
 				'class': classes.join(' '),
-				'style': datum.style || 'background:#fff',
+				'style': datum.style || '',
 			}));
 		}
 	}

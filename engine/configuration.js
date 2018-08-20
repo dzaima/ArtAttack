@@ -12,7 +12,7 @@ define(['display/documentUtils'], (docutil) => {
 
 	return {
 		pageTitle: docutil.getTitle(),
-		maxConcurrency: Math.max(1, Math.min(8, navigator.hardwareConcurrency - 3)),
+		maxConcurrency: Math.max(2, Math.min(8, navigator.hardwareConcurrency - 3)),
 		gameType: meta('game-type'),
 		teamType: meta('team-type', 'free_for_all'),
 		teamTypeArgs: JSON.parse(meta('team-type-args', '{}')),

@@ -24,9 +24,9 @@ define([
 			this.teams = gameConfig.teams;
       this.boardSize = this.teams.length * 3;
 			this.board = new Array(this.boardSize).fill(0).map(c=>new Array(this.boardSize).fill(0)); //.map(c=>random.next(this.teams.length));
-			this.round = 0;
+			this.frame = 0;
 			this.simulationTime = 0;
-			this.playerColors = this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(100)+80));
+			this.playerColors = this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(120)+100));
 			this.playerColors.unshift([255,255,255]);
 			// gameConfig contains:
 			// - seed: the current game seed. Typically you won't need to check
@@ -122,14 +122,13 @@ define([
 
 		step(type) {
 			const begin = performance.now();
-			if (this.round >= this.maxFrame) return;
-			this.frame = this.round;
+			if (this.frame >= this.maxFrame) return;
 			// this.board[this.random.next(this.board.length)][this.random.next(this.board.length)] = this.random.next(this.teams.length)
 			this.random.save();
 			var results = new Array(this.teams.length);
 			var grid = JSON.parse(JSON.stringify(this.board));
 			var bots = [...this.entryLookup.values()].map(c => [c.col, c.x, c.y]);
-			var gameInfo = [this.round, this.maxFrame];
+			var gameInfo = [this.frame, this.maxFrame];
 			//console.log(window.localStorage);
 			var i = 0;
 			for (var [id, entry] of this.entryLookup) {
@@ -197,7 +196,7 @@ define([
 				}
 			}
 			
-			if (this.round>=5) { // eliminating
+			if (this.frame>=5) { // eliminating
 				var found = new Array(this.teams.length+1).fill(0);
 				for (var col of this.board) for (var item of col) found[item]++;
 				for (let [id, entry] of this.entryLookup) {
@@ -207,13 +206,13 @@ define([
 				}
 			}
 			
-			this.round++;
+			this.frame++;
 			this.simulationTime += performance.now() - begin;
 		}
 
 		isOver() {
 			// Return false until your game is over, then true.
-			return this.round >= this.gameConfig.maxFrame;
+			return this.frame >= this.gameConfig.maxFrame;
 		}
 
 		getState() {
@@ -222,14 +221,14 @@ define([
 			return {
 				// Framework data
 				over: this.isOver(), // when true, the game stops
-				progress: 0, // a number from 0 to 1, used for progress bars
 
 				// Game specific data
 				// Put anything you like here, but make sure you have teams:
 				size: this.boardSize,
 				board: this.board,
+				progress: this.frame / this.gameConfig.maxFrame,
 				// allEntries: [...this.entryLookup.entries()].map(c=>c[1]),
-				frame: this.round,
+				frame: this.frame,
 				simulationTime: this.simulationTime,
 				maxFrame: this.gameConfig.maxFrame,
 				playerColors: this.playerColors,
