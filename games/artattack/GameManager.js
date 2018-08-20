@@ -129,7 +129,7 @@ define([
 			var results = new Array(this.teams.length);
 			var grid = JSON.parse(JSON.stringify(this.board));
 			var bots = [...this.entryLookup.values()].map(c => [c.col, c.x, c.y]);
-			var gameInfo = [this.round, 1000000];
+			var gameInfo = [this.round, maxFrame];
 			//console.log(window.localStorage);
 			var i = 0;
 			for (var [id, entry] of this.entryLookup) {
