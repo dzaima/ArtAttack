@@ -166,6 +166,7 @@ define([
 				results[i++] = {entry, action};
 			}
 			for (let {entry, action} of results) {
+				if (entry.disqualified) continue;
 				if (action == "up") {
 					entry.y -= 1;
 					if (entry.y < 0) entry.y = 0;
@@ -209,62 +210,6 @@ define([
 			this.round++;
 			this.simulationTime += performance.now() - begin;
 		}
-			// // type will usually be '', but you can define custom step types
-			// // and invoke them from your Display class (e.g. 'single')
-			// 
-			// // An example implementation which invokes the entry's function,
-			// // then error-checks its output:
-			// 
-			// // If you use random numbers, save the random state before starting;
-			// // this will allow a full rollback if we want to pause on errors
-			// // later.
-			// this.random.save();
-			// 
-			// const entry = null; // Pick an entry
-			// 
-			// const params = {
-			// 	my: 'foo',
-			// 	parameters: 'bar',
-			// 	here: 'baz',
-			// };
-			// let action = null;
-			// let error = null;
-			// let elapsed = 0;
-			// 
-			// try {
-			// 	// For an example of how to allow competitors to use Math.random
-			// 	// without becoming non-deterministic, see battlebots/botflocks
-			// 	const begin = performance.now();
-			// 	action = entry.fn(params, {consoleTarget: entry.console});
-			// 	elapsed = performance.now() - begin;
-			// 
-			// 	// If your error checking is complex, you may want to invoke a
-			// 	// separate method instead of writing it inline here.
-			// 	// For example:
-			// 	// error = this.checkError(entry, action);
-			// 
-			// 	const actionIsBad = false; // Check this
-			// 	if(actionIsBad) {
-			// 		error = 'Oh no!';
-			// 	}
-			// } catch(e) {
-			// 	error = entryUtils.stringifyEntryError(e);
-			// }
-			// 
-			// // Recording average time taken can help to name-and-shame slow
-			// // entries, but is not required
-			// entry.elapsedTime += elapsed;
-			// ++ entry.codeSteps;
-			// 
-			// if(error) {
-			// 	this.handleError(entry, params, action, error);
-			// } else {
-			// 	// Apply the action
-			// 	// It's often good to invoke separate method for this to avoid
-			// 	// a massive do-everything step(), which would get hard to
-			// 	// navigate. For example:
-			// 	// this.performAction(entry, action);
-			// }
 
 		isOver() {
 			// Return false until your game is over, then true.
