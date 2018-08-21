@@ -111,7 +111,7 @@ define([
 		// This is an internal method; you can change the arguments to whatever
 		// you need when handling errors
 		handleError(entry, params, action, error) {
-			console.log(entry.title + "errored:", params, action, error);
+			console.log(entry.title + " errored:", params, action, error);
 			// errorInput, errorOutput, and error are presented to the user.
 			// Fill them in with something useful. For example:
 			entry.errorInput = JSON.stringify(params);
