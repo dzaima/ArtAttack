@@ -64,7 +64,7 @@ define([
 
 			options.addEventForwarding(this);
 			this.addVisualisationChild(options, {screensaver: false});
-			this.addVisualisationChild(this.board);
+			// this.addVisualisationChild(this.board);
 			this.addChild(renderer);
 			this.addChild(table);
 
