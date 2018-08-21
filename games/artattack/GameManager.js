@@ -24,7 +24,7 @@ define([
 			this.teams = gameConfig.teams;
       this.boardSize = this.teams.length * 3;
 			this.board = new Array(this.boardSize).fill(0).map(c=>new Array(this.boardSize).fill(0)); //.map(c=>random.next(this.teams.length));
-			this.frame = 0;
+			this.frame = 2;
 			this.simulationTime = 0;
 			this.playerColors = this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(120)+100));
 			this.playerColors.unshift([255,255,255]);
@@ -38,21 +38,25 @@ define([
 			this.entryLookup = new Map();
 			var colors = new Array(this.teams.length).fill(0).map((_,i)=>i+1);
 			for (let c of this.teams) {
-				let entry = c.entries[0];
+				let playerEntry = c.entries[0];
 				let col = colors.splice(random.next(colors.length-1),1)[0];
-				this.entryLookup.set(entry.id, {
+				let entry = {
 					x: random.next(this.boardSize),
 					y: random.next(this.boardSize),
 					col,
-					entryID: entry.id,
+					entryID: playerEntry.id,
 					teamID: c.id,
 					localStorage: {},
 					elapsedTime: 0,
 					disqualified: false,
 					codeSteps: 0,
-				})
+					title: playerEntry.title,
+				}
+				entry.localStorage.setItem = (a,b)=>entry.localStorage[a] = b;
+				entry.localStorage.getItem = (a)=>entry.localStorage[a]||null;
+				this.entryLookup.set(playerEntry.id, entry);
 				c.rgb = '#'+this.playerColors[col].map(c=>c.toString(16).padStart(2,0)).join('');
-				this.updateEntry({id: entry.id, code: entry.code, pauseOnError: entry.pauseOnError, disqualified: false});
+				this.updateEntry({id: playerEntry.id, code: playerEntry.code, pauseOnError: playerEntry.pauseOnError, disqualified: false});
 			}
 			console.log("GAME START", this.entryLookup, this.teams, this);
 			
@@ -107,7 +111,7 @@ define([
 		// This is an internal method; you can change the arguments to whatever
 		// you need when handling errors
 		handleError(entry, params, action, error) {
-			console.log("Error:",entry, params, action, error);
+			console.log(entry.title + "errored:", params, action, error);
 			// errorInput, errorOutput, and error are presented to the user.
 			// Fill them in with something useful. For example:
 			entry.errorInput = JSON.stringify(params);
@@ -129,7 +133,6 @@ define([
 			var grid = JSON.parse(JSON.stringify(this.board));
 			var bots = [...this.entryLookup.values()].map(c => [c.col, c.x, c.y]);
 			var gameInfo = [this.frame, this.maxFrame];
-			//console.log(window.localStorage);
 			var i = 0;
 			for (var [id, entry] of this.entryLookup) {
 				if (entry.disqualified) {
