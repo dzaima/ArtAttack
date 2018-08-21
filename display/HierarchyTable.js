@@ -119,6 +119,15 @@ define(['./documentUtils', './style.css'], (docutil) => {
 			output.push(docutil.make('tr', {
 				'class': classes.join(' '),
 				'style': datum.style || '',
+				'onmouseover': `
+				  mark = document.querySelector(".mark."+this.classList[0]);
+					[...document.querySelectorAll(".pointed")].forEach(c=>c.classList.remove("pointed"));
+					mark.classList.add("pointed");
+				`,
+				'onmouseout': `
+				  mark = document.querySelector(".mark."+this.classList[0]);
+					mark.classList.remove("pointed");
+				`,
 			}));
 		}
 	}

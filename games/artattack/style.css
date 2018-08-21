@@ -30,3 +30,10 @@ canvas {
     border: 1px solid #000000;
     background: #DDDDDD;
 }
+
+
+.mark.pointed:before {
+	content: '👇\01F451';
+  top: -1em;
+	color: #000;
+}
