@@ -143,7 +143,7 @@ define([
 									'} catch(e) {' +
 										'return String(v);' +
 									'}' +
-								'}).join(" ").substr(0, consoleItemLimit),' +
+								'}).join(" "),' +
 							'});' +
 							'if(consoleTarget.length > consoleLimit) {' +
 								'consoleTarget.shift();' +
