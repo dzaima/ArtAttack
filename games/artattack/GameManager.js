@@ -24,7 +24,7 @@ define([
 			this.teams = gameConfig.teams;
       this.boardSize = this.teams.length * 3;
 			this.board = new Array(this.boardSize).fill(0).map(c=>new Array(this.boardSize).fill(0)); //.map(c=>random.next(this.teams.length));
-			this.frame = 2;
+			this.frame = 1;
 			this.simulationTime = 0;
 			this.playerColors = this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(120)+100));
 			this.playerColors.unshift([255,255,255]);
@@ -131,7 +131,7 @@ define([
 			this.random.save();
 			var results = new Array(this.teams.length);
 			var grid = JSON.parse(JSON.stringify(this.board));
-			var bots = [...this.entryLookup.values()].map(c => [c.col, c.x, c.y]);
+			var bots = [...this.entryLookup.values()].filter(c=>!c.disqualified).map(c => [c.col, c.x, c.y]);
 			var gameInfo = [this.frame, this.maxFrame];
 			var i = 0;
 			for (var [id, entry] of this.entryLookup) {
