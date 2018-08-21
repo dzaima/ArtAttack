@@ -152,7 +152,7 @@ define([
 						'return {' +
 							'clear: () => {consoleTarget.length = 0;},' +
 							'info: function() {dolog("info", arguments);},' +
-							'log: function() {dolog("log", arguments);},' +
+							'log: consoleTarget.log? consoleTarget.log : function() {dolog("log", arguments);},' +
 							'warn: function() {dolog("warn", arguments);},' +
 							'error: function() {dolog("error", arguments);},' +
 						'};' +

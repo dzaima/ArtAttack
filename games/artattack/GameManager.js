@@ -161,7 +161,7 @@ define([
 				
 				try {
 					const begin = performance.now();
-				  action = entry.fn(params, {consoleTarget: {push: a => console[a.type](a.value)}, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
+				  action = entry.fn(params, {consoleTarget: {push: a => console[a.type](a.value), log: console.log}, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
 					elapsed = performance.now() - begin;
 				} catch(e) {
 					error = entryUtils.stringifyEntryError(e);
