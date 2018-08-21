@@ -39,7 +39,7 @@ define([
 			var colors = new Array(this.teams.length).fill(0).map((_,i)=>i+1);
 			for (let c of this.teams) {
 				let playerEntry = c.entries[0];
-				let col = colors.splice(random.next(colors.length-1),1)[0];
+				let col = colors.splice(random.next(colors.length),1)[0];
 				let entry = {
 					x: random.next(this.boardSize),
 					y: random.next(this.boardSize),
