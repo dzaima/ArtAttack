@@ -98,7 +98,7 @@ define([
 				const d = this.dat.data;
 				for(let y = 0; y < this.size; ++ y) {
 					for(let x = 0; x < this.size; ++ x) {
-						const cell = this.rawBoard[y][x];
+						const cell = this.rawBoard[x][y];
 						const c = this.playerColors[cell];
 						const l = (y * this.width + x) * 4;
 						d[l    ] = c[0];
@@ -116,11 +116,11 @@ define([
 			
 			this.rawPlayers.forEach((team) => {
 				let entry = team.entries[0];
-				const x = entry.y;
-				const y = entry.x;
+				const x = entry.x;
+				const y = entry.y;
 				let className = 'team team-' + team.id;
 				let tooltip = entry.title+': color ' + entry.col;
-				markers.set(x + '-' + y, {
+				markers.set(team.id, {
 					x,
 					y,
 					className,

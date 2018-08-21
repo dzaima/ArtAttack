@@ -26,7 +26,9 @@ define([
 			this.board = new Array(this.boardSize).fill(0).map(c=>new Array(this.boardSize).fill(0)); //.map(c=>random.next(this.teams.length));
 			this.frame = 1;
 			this.simulationTime = 0;
-			this.playerColors = this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(120)+100));
+			var presets = [[230, 25, 75],[60, 180, 75],[255, 225, 25],[0, 130, 200],[245, 130, 48],[145, 30, 180],[70, 240, 240],[240, 50, 230],[210, 245, 60],[250, 190, 190],[0, 128, 128],[230, 190, 255],[170, 110, 40],[128, 0, 0],[170, 255, 195],[128, 128, 0],[255, 215, 180],[0, 0, 128],[128, 128, 128]];
+			presets = presets.map(col => col.map(c => Math.floor(255 - ((255-c)*.5))))
+			this.playerColors = presets.concat(this.teams.map(c=>new Array(3).fill(0).map(c=>random.next(120)+100))).slice(0, this.teams.length);
 			this.playerColors.unshift([255,255,255]);
 			// gameConfig contains:
 			// - seed: the current game seed. Typically you won't need to check
