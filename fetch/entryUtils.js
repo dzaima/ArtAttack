@@ -104,7 +104,7 @@ define([
 	}
 
 	return {
-		compile: (code, parameters, {pre = '', returning = null} = {}) => {
+		compile: (code, parameters, {pre = '', returning = null, globals = ''} = {}) => {
 			let after = '';
 			if(returning !== null) {
 				after = buildFunctionFinder(code, returning);
@@ -118,9 +118,12 @@ define([
 				// All prelude is rendered on 1 line so that line numbers in
 				// reported errors are easy to rectify
 				//'"use strict";' +
-				'self.tempFn = function(parameters, extras) {' +
-					'const self = undefined;' +
-					'const window = undefined;' +
+				'self.tempFn = (()=>{'+
+				globals +
+				'var _botFn = ' + code + ';' +
+				'return function(parameters, extras) {' +
+				  'const botFn = _botFn;' +
+					// 'const self = undefined;' +
 					'const require = undefined;' +
 					'const requireFactory = undefined;' +
 					'const define = undefined;' +
@@ -157,12 +160,14 @@ define([
 							'error: function() {dolog("error", arguments);},' +
 						'};' +
 					'})(extras)) : undefined);' +
+					'if (extras.globals) {' +
+						'for (var c in extras.globals) self[c] = extras.globals[c];' +
+					'}' +
 					pre +
 					'extras = undefined;' +
-					'return (function({' + parameters.join(',') + '}) {\n' +
-						code + '\n' + after +
-					'}).call(parameters["this"] || {}, parameters);' +
-				'};\n'
+					'return botFn.call(parameters["this"] || {}, ...parameters);' +
+				'};\n' +
+				'return })()'
 			);
 
 			let fn = null;

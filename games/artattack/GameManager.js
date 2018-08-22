@@ -84,7 +84,7 @@ define([
 				var parameters = [
 					'myself', 'grid', 'bots', 'gameInfo', 'window', 'localStorage'
 				];
-				const compiledCode = entryUtils.compile("return ("+code+").call(this, myself, grid, bots, gameInfo)", parameters, {pre: 'Math.random = extras.MathRandom;'});
+				const compiledCode = entryUtils.compile(code, parameters, {pre: 'Math.random = extras.MathRandom;', globals: 'localStorage = null, window = null;'});
 				entry.fn = compiledCode.fn;
 				if(compiledCode.compileError) {
 					entry.disqualified = true;
@@ -146,25 +146,27 @@ define([
 				}
 				var myself = [entry.col, entry.x, entry.y];
 				var localStorage = entry.localStorage;
-				const params = {
-					myself,
-					grid,
-					bots,
-					gameInfo,
-					window: {localStorage},
-					localStorage,
-					this: entry.thisObject,
-				};
+				// const params = {
+				// 	myself,
+				// 	grid,
+				// 	bots,
+				// 	gameInfo,
+				// 	window: {localStorage},
+				// 	localStorage,
+				// 	this: entry.thisObject,
+				// };
+				const params = [myself, grid, bots, gameInfo];
+				params['this'] = entry.thisObject;
 				let error = null;
 				let action = null;
 				let elapsed = 0;
 				
 				try {
 					const begin = performance.now();
-				  action = entry.fn(params, {consoleTarget: {push: a => console[a.type](a.value), log: console.log}, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
+				  action = entry.fn(params, {globals: {window: {localStorage}, localStorage}, consoleTarget: {push: a => console[a.type](a.value), log: console.log}, MathRandom: ()=>this.random.nextFloat()}); //consoleTarget: entry.console   consoleTarget:console
 					elapsed = performance.now() - begin;
 				} catch(e) {
-					error = entryUtils.stringifyEntryError(e);
+					error = e;
 				}
 				entry.elapsedTime += elapsed;
 				++ entry.codeSteps;
