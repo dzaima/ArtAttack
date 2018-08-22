@@ -92,6 +92,7 @@ define([
 			if(!this.dat || !this.playerColors) {
 				return;
 			}
+			if (this.rawBoard.length != this.size) return;
 			if(!this.rawBoard) {
 				this.dat.data.fill(0);
 			} else {
