@@ -442,26 +442,20 @@ define([
 		}
 
 		buildWelcomePage() {
-			const btnScreensaver = docutil.make('button', {}, [
-				'Begin Screensaver',
-			]);
-			btnScreensaver.addEventListener('click',
-				this.beginScreensaver.bind(this));
 
 			const btnTournament = docutil.make('button', {}, [
-				'Begin Random Tournament',
+				'Begin a Tournament',
 			]);
 			btnTournament.addEventListener('click',
 				this.beginRandomTournament.bind(this));
 
 			const btnGame = docutil.make('button', {}, [
-				'Begin Random Game',
+				'Begin a Game',
 			]);
 			btnGame.addEventListener('click',
 				this.beginRandomGame.bind(this));
 
 			const generalOptions = docutil.make('span', {'class': 'general-options'}, [
-				btnScreensaver,
 				btnTournament,
 				btnGame,
 			]);
