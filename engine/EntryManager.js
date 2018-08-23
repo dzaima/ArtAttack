@@ -104,7 +104,7 @@ define([
 
 			this.entryOptions = docutil.make('span', {}, [
 				docutil.make('label', {}, ['Title ', this.titleEditor]),
-				docutil.make('label', {}, [this.pauseToggle, ' pause on error']),
+				//docutil.make('label', {}, [this.pauseToggle, ' pause on error']),
 			]);
 
 			this.optionsBar = docutil.make('div', {'class': 'options-bar'}, [this.entryOptions]);
