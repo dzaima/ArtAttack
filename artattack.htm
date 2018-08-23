@@ -78,7 +78,6 @@ var kbdmap = {
 var shorcutFn = function (e) {
 	var active = document.activeElement.tagName.toLowerCase();
 	if (active === 'input' || active === 'textarea' || e.shiftKey || e.ctrlKey || e.altKey) return;
-  console.log(e);
   let k = e.key;
   let name = kbdmap[k];
   if (name) {
