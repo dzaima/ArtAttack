@@ -20,7 +20,7 @@ canvas {
     line-height: 1em;
     text-align: center;
 }
-.mark:after {
+/* .mark:after {
     content: '';
     position: absolute;
     bottom: 2px;
@@ -29,11 +29,13 @@ canvas {
     height: 4px;
     border: 1px solid #000000;
     background: #DDDDDD;
-}
+} */
 
 
 .mark.pointed:before {
-	content: '👇\01F451';
-  top: -1em;
+	content: '\01F447\01F451';
+  top: -1.5em;
+  left: -0.5em;
+  font-size: 3em;
 	color: #000;
 }

@@ -65,6 +65,28 @@ style-src 'self';
 <body>
 
 <noscript>This viewer requires Javascript!</noscript>
-
+<script>
+var kbdmap = {
+  1: 'Play 1/4 Speed',
+  2: 'Play 1/2 Speed',
+  3: 'Play',
+  4: 'Play Fast',
+  5: 'Fastest Possible',
+  ' ': 'Pause',
+  '`': 'Step'
+}
+var shorcutFn = function (e) {
+	var active = document.activeElement.tagName.toLowerCase();
+	if (active === 'input' || active === 'textarea' || e.shiftKey || e.ctrlKey || e.altKey) return;
+  console.log(e);
+  let k = e.key;
+  let name = kbdmap[k];
+  if (name) {
+    document.querySelector(`button[title="${name}"]`).click();
+    e.preventDefault();
+  }
+};
+document.addEventListener("keydown", shorcutFn);	
+</script>
 </body>
 </html>

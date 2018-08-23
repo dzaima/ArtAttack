@@ -66,6 +66,13 @@ define([
 			this.addVisualisationChild(options, {screensaver: false});
 			// this.addVisualisationChild(this.board);
 			this.addChild(renderer);
+			var desc = docutil.make(
+				'section',
+				{'class': 'game-container','style': 'display:inline-block; font-size:10px'},
+				[renderer.dom(),docutil.make('br'),'shortcuts: backtick: step; 1-5: different speeds; space: pause']
+			)
+			this.addChild({dom:()=>docutil.make('br')});
+			this.addChild({dom:()=>desc});
 			this.addChild(table);
 
 			// If you want to allow your user to change play/game/display
