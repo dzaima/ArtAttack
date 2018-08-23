@@ -42,9 +42,15 @@ define([
 			for (let c of this.teams) {
 				let playerEntry = c.entries[0];
 				let col = colors.splice(random.next(colors.length),1)[0];
+				let x, y;
+				do {
+					x = random.next(this.boardSize);
+					y = random.next(this.boardSize);
+				} while ([...this.entryLookup.entries()].some(([key, e])=>e.x == x && e.y == y));
+				this.board[x][y] = col;
 				let entry = {
-					x: random.next(this.boardSize),
-					y: random.next(this.boardSize),
+					x,
+					y,
 					col,
 					entryID: playerEntry.id,
 					teamID: c.id,
