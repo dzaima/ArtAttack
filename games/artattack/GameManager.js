@@ -137,19 +137,20 @@ define([
 
 		step(type) {
 			const begin = performance.now();
-			if (this.frame >= this.maxFrame) return;
+			if (this.frame >= this.gameConfig.maxFrame) return;
 			// this.board[this.random.next(this.board.length)][this.random.next(this.board.length)] = this.random.next(this.teams.length)
 			this.random.save();
 			var results = new Array(this.teams.length);
-			var grid = JSON.parse(JSON.stringify(this.board));
-			var bots = [...this.entryLookup.values()].filter(c=>!c.disqualified).map(c => [c.col, c.x, c.y]);
-			var gameInfo = [this.frame, this.maxFrame];
 			var i = 0;
+			var playingBots = [...this.entryLookup.values()].filter(c=>!c.disqualified).map(c => [c.col, c.x, c.y]);
 			for (var [id, entry] of this.entryLookup) {
 				if (entry.disqualified) {
 					results[i++] = {entry, action: "nothing"};
 					continue;
 				}
+				var grid = this.board.slice().map(c=>c.slice());
+				var bots = playingBots.slice().map(c=>c.slice());
+				var gameInfo = [this.frame, this.gameConfig.maxFrame];
 				var myself = [entry.col, entry.x, entry.y];
 				var localStorage = entry.localStorage;
 				// const params = {
