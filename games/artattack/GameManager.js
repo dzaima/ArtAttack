@@ -23,7 +23,7 @@ define([
 			this.random = random; // a seeded random object you can use
 			this.teams = gameConfig.teams;
       this.boardSize = this.teams.length * 3;
-			this.board = new Array(this.boardSize).fill(0).map(c=>new Array(this.boardSize).fill(0)); //.map(c=>random.next(this.teams.length));
+			this.board = new Array(this.boardSize).fill(0).map(c=>new Uint8Array(this.boardSize));
 			this.frame = 1;
 			this.simulationTime = 0;
 			var presets = [[230, 25, 75],[60, 180, 75],[255, 225, 25],[0, 130, 200],[245, 130, 48],[145, 30, 180],[70, 240, 240],[240, 50, 230],[210, 245, 60],[250, 190, 190],[0, 128, 128],[230, 190, 255],[170, 110, 40],[128, 0, 0],[170, 255, 195],[128, 128, 0],[255, 215, 180],[0, 0, 256],[128, 128, 128]];
@@ -148,7 +148,14 @@ define([
 					results[i++] = {entry, action: "nothing"};
 					continue;
 				}
-				var grid = this.board.slice().map(c=>c.slice());
+				var grid = new Array(this.boardSize);//this.board//.map(c=>c.slice());
+				for(let i=0;i<this.boardSize;i++){
+					let tmp=new Uint8Array(this.boardSize);
+					for(let j=0;j<this.boardSize;j++)tmp[j] = this.board[i][j];
+					grid[i] = tmp;
+					// grid[i] = this.board[i].slice();
+				}
+				// var grid = this.board.slice().map(c=>c.slice());
 				var bots = playingBots.slice().map(c=>c.slice());
 				var gameInfo = [this.frame, this.gameConfig.maxFrame];
 				var myself = [entry.col, entry.x, entry.y];
@@ -175,6 +182,7 @@ define([
 				} catch(e) {
 					error = e;
 				}
+				// if (this.board.some((col,x)=>col.some((c,y) => grid[x][y] != c))) console.log(entry);
 				entry.elapsedTime += elapsed;
 				++ entry.codeSteps;
 				if (error) {
