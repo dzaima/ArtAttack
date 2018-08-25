@@ -121,12 +121,14 @@ define(['./documentUtils', './style.css'], (docutil) => {
 				'style': datum.style || '',
 				'onmouseover': `
 				  mark = document.querySelector(".mark."+this.classList[0]);
-					[...document.querySelectorAll(".pointed")].forEach(c=>c.classList.remove("pointed"));
-					mark.classList.add("pointed");
+					if (mark) {
+						[...document.querySelectorAll(".pointed")].forEach(c=>c.classList.remove("pointed"));
+						mark.classList.add("pointed");
+					}
 				`,
 				'onmouseout': `
 				  mark = document.querySelector(".mark."+this.classList[0]);
-					mark.classList.remove("pointed");
+					if (mark) mark.classList.remove("pointed");
 				`,
 			}));
 		}
