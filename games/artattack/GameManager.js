@@ -142,7 +142,7 @@ define([
 			this.random.save();
 			var results = new Array(this.teams.length);
 			var i = 0;
-			var playingBots = [...this.entryLookup.values()].filter(c=>!c.disqualified).map(c => [c.col, c.x, c.y]);
+			var playingBots = [...this.entryLookup.values()].filter(c=>!c.disqualified).map(c => [c.col, c.x, c.y, c.title]);
 			for (var [id, entry] of this.entryLookup) {
 				if (entry.disqualified) {
 					results[i++] = {entry, action: "nothing"};
