@@ -41,6 +41,7 @@ define([
 			// (you can create DOM nodes using any methods/libraries you like)
 
 			const renderer = new BoardRenderer();
+			this.brenderer = renderer;
 			const options = new StepperOptions(StepperOptions.makeSpeedButtons({
 				'-3': {delay: 1000, speed: 1},
 				'-2': {delay: 500, speed: 1},
@@ -99,6 +100,7 @@ define([
 
 		clear() {
 			super.clear();
+			this.brenderer.clear();
 			this.board.repaint();
 			// Reset all displayed data; a new game is about to begin
 		}

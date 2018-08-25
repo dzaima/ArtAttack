@@ -61,6 +61,10 @@ define([
 
 		clear() {
 			this.repaint();
+			this.renderedMarks.forEach((dom, key) => {
+				docutil.setParent(dom.element, null);
+				this.renderedMarks.delete(key);
+			});
 		}
 
 		updateGameConfig({teams}) {
@@ -121,7 +125,7 @@ define([
 				const y = entry.y;
 				let className = 'team team-' + team.id;
 				let tooltip = entry.title+': color ' + entry.col;
-				markers.set(team.id, {
+				markers.set(team.id+"c"+entry.col, {
 					x,
 					y,
 					className,
