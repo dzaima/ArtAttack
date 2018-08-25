@@ -156,12 +156,12 @@ define([
 					dom = {
 						element: docutil.make('div'),
 					};
+					docutil.updateAttrs(dom.element, {
+						'class': 'mark ' + (mark.className || ''),
+						'title': mark.tooltip,
+					});
 					this.renderedMarks.set(key, dom);
 				}
-				docutil.updateAttrs(dom.element, {
-					'class': 'mark ' + (mark.className || ''),
-					'title': mark.tooltip,
-				});
 				docutil.updateStyle(dom.element, {
 					'left': (mark.x * this.scale) + 'px',
 					'top': (mark.y * this.scale) + 'px',
